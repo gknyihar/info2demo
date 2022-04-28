@@ -19,3 +19,17 @@ li{
 li:hover{
     background-color: #cccccc;
 }
+
+.nav{
+    display: flex;
+    justify-content: start;
+}
+
+.nav-link{
+    padding: 5px;
+
+}
+
+.nav-link:hover{
+    background-color: white;
+}

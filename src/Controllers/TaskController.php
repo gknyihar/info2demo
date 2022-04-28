@@ -7,9 +7,18 @@ class TaskController
     public function index()
     {
         $tasks = [
-            "Bevásárlás",
-            "Takarítás",
-            "Főzés"
+            [
+                "title" => "Bevásárlás",
+                "description" => "Kenyér, Tej"
+            ],
+            [
+                "title" => "Takarítás",
+                "description" => "Az egész ház"
+            ],
+            [
+                "title" => "Főzés",
+                "description" => "Vacsora készítés a családnak"
+            ]
         ];
 
         view('tasks', compact('tasks'));
