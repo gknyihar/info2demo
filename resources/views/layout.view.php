@@ -10,7 +10,7 @@
     <h1>Feladatok</h1>
 </div>
 <div>
-    <?= $slot; ?>
+    <?php require $slot; ?>
 </div>
 </body>
 </html>

@@ -1,5 +1,7 @@
 <?php
 require "helpers/helpers.php";
+require "src/Controllers/TaskController.php";
 
-$name = "Info2";
-view("index");
+$controller = new TaskController();
+$controller->index();
+
