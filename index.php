@@ -1,9 +1,11 @@
 <?php
 
-use GKnyihar\Info2Demo\Controllers\TaskController;
+use GKnyihar\Info2Demo\Services\Router;
 
 require "vendor/autoload.php";
 
-$controller = new TaskController();
-$controller->index();
+$path = preg_replace("|^/demo/|","/",$_SERVER['REQUEST_URI']);
 
+$routes = require "routes/routes.php";
+$router = new Router($routes);
+$router->load($path);
