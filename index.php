@@ -1,4 +1,5 @@
 <?php
+require "helpers/helpers.php";
 
 $name = "Info2";
-require 'index.view.php';
+view("index");
