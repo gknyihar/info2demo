@@ -426,3 +426,105 @@ class UserController
     }
 }
 ```
+## Model
+src/Services/DB.php
+```php
+<?php
+
+namespace GKnyihar\Info2Demo\Services;
+
+use PDO;
+use PDOException;
+
+class DB
+{
+    private $pdo;
+
+    public function __construct($connectionString, $username, $password)
+    {
+        try {
+            $this->pdo = new PDO($connectionString, $username, $password);
+        } catch (PDOException $exception) {
+            die($exception->getMessage());
+        }
+    }
+
+    public function query($query, $object = "stdClass")
+    {
+        $query = $this->pdo->prepare($query);
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_CLASS, $object);
+    }
+}
+```
+src/Services/Model.php
+```php
+<?php
+namespace GKnyihar\Info2Demo\Services;
+
+class Model
+{
+    protected static $table = "";
+
+    public static function all()
+    {
+        $table = static::$table;
+        $db = new DB("mysql:host=localhost;dbname=info2demo", "root", "");
+        return $db->query("select * from {$table};", static::class);
+    }
+}
+```
+src/Models/Task.php
+```php
+<?php
+
+namespace GKnyihar\Info2Demo\Models;
+
+use GKnyihar\Info2Demo\Services\Model;
+
+class Task extends Model
+{
+    protected static $table = 'tasks';
+
+    public $id;
+    public $title;
+    public $description;
+}
+```
+src/Models/User.php
+```php
+<?php
+
+namespace GKnyihar\Info2Demo\Models;
+
+use GKnyihar\Info2Demo\Services\Model;
+
+class User extends Model
+{
+    protected static $table = 'users';
+
+    public $id;
+    public $username;
+    public $name;
+    public $email;
+}
+```
+src/Controllers/TaskController.php
+```php
+public function index()
+{
+    $tasks = Task::all();
+
+    view('tasks', compact('tasks'));
+}
+```
+src/Controllers/UserController.php
+```php
+public function index()
+{
+    $users = User::all();
+
+    view('users', compact('users'));
+}
+```
+
