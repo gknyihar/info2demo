@@ -1,0 +1,17 @@
+{
+    "name": "gknyihar/info2demo",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "GKnyihar\\Info2Demo\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Knyihár Gábor",
+            "email": "gabor.knyihar@aut.bme.hu"
+        }
+    ],
+    "require": {}
+}

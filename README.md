@@ -251,3 +251,34 @@ elseif ($path == "/users")
     require "users.php";
 ```
 Törölni kell a `require` sorokat a `tasks.php` és a `users.php`-ból.
+
+## Autoload
+```bash
+composer init
+```
+composer.json
+```json
+{
+    "name": "gknyihar/info2demo",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "GKnyihar\\Info2Demo\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Knyihár Gábor",
+            "email": "gabor.knyihar@aut.bme.hu"
+        }
+    ],
+    "require": {}
+}
+```
+index.php
+```php
+<?php
+require "vendor/autoload.php";
+//...
+```

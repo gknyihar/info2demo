@@ -1,5 +1,5 @@
 <?php
-require "helpers/helpers.php";
+require "vendor/autoload.php";
 
 $path = $_SERVER["REQUEST_URI"];
 
