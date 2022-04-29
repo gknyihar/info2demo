@@ -1,4 +1,5 @@
 <?php
+
 namespace GKnyihar\Info2Demo\Services;
 
 class Model
@@ -8,7 +9,7 @@ class Model
     public static function all()
     {
         $table = static::$table;
-        $db = new DB("mysql:host=localhost;dbname=info2demo", "root", "");
+        $db = new DB(config('db.connectionString'), config('db.username'), config('db.password'));
         return $db->query("select * from {$table};", static::class);
     }
 }

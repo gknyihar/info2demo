@@ -319,7 +319,9 @@ require "vendor/autoload.php";
 ```
 
 ## Route refaktorálás és controllerek
+
 src/Services/Router.php
+
 ```php
 <?php
 
@@ -346,7 +348,9 @@ class Router
     }
 }
 ```
+
 routes/routes.php
+
 ```php
 <?php
 
@@ -360,7 +364,9 @@ return [
     "/users" => [UserController::class, 'index'],
 ];
 ```
+
 src/Controllers/IndexControllers.php
+
 ```php
 <?php
 
@@ -374,7 +380,9 @@ class IndexController
     }
 }
 ```
+
 src/Controllers/TaskControllers.php
+
 ```php
 <?php
 
@@ -400,7 +408,9 @@ class TaskController
     }
 }
 ```
+
 src/Controllers/UserControllers.php
+
 ```php
 <?php
 
@@ -426,8 +436,11 @@ class UserController
     }
 }
 ```
+
 ## Model
+
 src/Services/DB.php
+
 ```php
 <?php
 
@@ -457,7 +470,9 @@ class DB
     }
 }
 ```
+
 src/Services/Model.php
+
 ```php
 <?php
 namespace GKnyihar\Info2Demo\Services;
@@ -474,7 +489,9 @@ class Model
     }
 }
 ```
+
 src/Models/Task.php
+
 ```php
 <?php
 
@@ -491,7 +508,9 @@ class Task extends Model
     public $description;
 }
 ```
+
 src/Models/User.php
+
 ```php
 <?php
 
@@ -509,7 +528,9 @@ class User extends Model
     public $email;
 }
 ```
+
 src/Controllers/TaskController.php
+
 ```php
 public function index()
 {
@@ -518,7 +539,9 @@ public function index()
     view('tasks', compact('tasks'));
 }
 ```
+
 src/Controllers/UserController.php
+
 ```php
 public function index()
 {
@@ -528,3 +551,43 @@ public function index()
 }
 ```
 
+## Config
+
+config/db.php
+
+```php 
+<?php
+
+return [
+    "connectionString" => "mysql:host=localhost;dbname=info2demo",
+    "username" => "root",
+    "password" => ""
+];
+```
+
+helpers/helpers.php
+
+```php 
+//...
+
+function config($key, $default = null)
+{
+    list($file, $array_key) = explode('.', $key);
+
+    $fileName = "config/{$file}.php";
+    if (!file_exists($fileName)) return $default;
+    $config = require $fileName;
+
+    if (!array_key_exists($array_key, $config)) return $default;
+
+    return $config[$array_key];
+}
+```
+
+src/Services/Model.php
+
+```php 
+//...
+$db = new DB(config('db.connectionString'), config('db.username'), config('db.password'));
+//...
+```
