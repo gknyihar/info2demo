@@ -16,6 +16,7 @@
             <div class="flex gap-4 text-gray-400">
                 <a href="/" class="hover:underline">Főoldal</a>
                 <a href="/tasks" class="hover:underline">Feladatok</a>
+                <a href="/users" class="hover:underline">Felhasználók</a>
             </div>
         </div>
     </div>

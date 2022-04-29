@@ -1,10 +1,7 @@
 <?php
 
 
-namespace GKnyihar\Info2Demo\Models;
-
-
-use GKnyihar\Info2Demo\Services\DB;
+namespace GKnyihar\Info2Demo\Services;
 
 class Model
 {
@@ -12,7 +9,8 @@ class Model
 
     public static function all()
     {
+        $table = static::$table;
         $db = new DB(config('db.connectionString'), config('db.username'), config('db.password'));
-        return $db->query("select * from {static::table};", static::class);
+        return $db->query("select * from {$table};", static::class);
     }
 }
