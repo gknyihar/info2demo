@@ -194,5 +194,45 @@ $users = $query->fetchAll(PDO::FETCH_OBJ);
 
 require 'views/users.view.php';
 ```
+## Layout készítés
 
+layout.view.php
+```html
+    <!--- html --->
+    <div class="max-w-5xl w-full px-4 grow">
+        <?php require $slot; ?>
+    </div>
+    <!--- html --->
+```
+helpers/helpers.php
+```php
+<?php
 
+function view($view, $params = [])
+{
+    extract($params);
+    $slot = "views/{$view}.view.php";
+    require "views/layout.view.php";
+}
+```
+index.php
+```php
+<?php
+require "helpers/helpers.php";
+
+view('index');
+```
+tasks.php
+```php
+<?php
+require "helpers/helpers.php";
+// ...
+view('tasks', compact('tasks'));
+```
+users.php
+```php
+<?php
+require "helpers/helpers.php";
+// ...
+view('users', compact('users'));;
+```
