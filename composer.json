@@ -16,5 +16,7 @@
             "email": "gabor.knyihar@aut.bme.hu"
         }
     ],
-    "require": {}
+    "require": {
+      "ext-pdo": "*"
+    }
 }
