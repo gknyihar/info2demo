@@ -1,6 +1,4 @@
 <?php
-require "helpers/helpers.php";
-
 try {
     $pdo = new PDO("mysql:host=localhost;dbname=info2demo", "root", "");
 } catch (PDOException $exception) {

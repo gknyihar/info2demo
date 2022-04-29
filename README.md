@@ -236,3 +236,18 @@ require "helpers/helpers.php";
 // ...
 view('users', compact('users'));;
 ```
+## Routolás
+```php
+<?php
+require "helpers/helpers.php";
+
+$path = $_SERVER["REQUEST_URI"];
+
+if ($path == "/")
+    view('index');
+elseif ($path == "/tasks")
+    require 'tasks.php';
+elseif ($path == "/users")
+    require "users.php";
+```
+Törölni kell a `require` sorokat a `tasks.php` és a `users.php`-ból.
