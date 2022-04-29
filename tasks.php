@@ -1,3 +1,14 @@
+<?php
+    try{
+        $pdo = new PDO("mysql:host=localhost;dbname=info2demo", "root", "");
+    } catch (PDOException $exception){
+        die($exception->getMessage());
+    }
+    $query = $pdo->prepare("select * from tasks;");
+    $query->execute();
+    $tasks = $query->fetchAll(PDO::FETCH_OBJ);
+?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -21,13 +32,17 @@
     </div>
 
     <div class="max-w-5xl w-full px-4 grow">
-        <div class="bg-white p-4 shadow border-gray-200 rounded-lg">
-            <h1 class="text-xl font-bold">
-                Hello, Info2!
-            </h1>
-            <p class="mt-4">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce imperdiet tellus felis, ut gravida enim tempus sed. Donec efficitur faucibus ipsum et ornare. Maecenas convallis in risus et vulputate. Nullam sit amet elementum urna, ac malesuada tellus. Duis urna odio, pretium ac nulla vitae, interdum pellentesque justo. Nulla sed accumsan dolor. Pellentesque et auctor justo. Ut sit amet libero vel libero commodo blandit eget at velit.
-            </p>
+        <div class="flex flex-col gap-4">
+            <?php foreach ($tasks as $task): ?>
+                <div class="bg-white p-4 shadow border-gray-200 rounded-lg">
+                    <h1 class="text-xl font-bold">
+                        <?= $task->title; ?>
+                    </h1>
+                    <p class="mt-4">
+                        <?= $task->description; ?>
+                    </p>
+                </div>
+            <?php endforeach; ?>
         </div>
     </div>
 
