@@ -1,11 +1,10 @@
 <?php
 require "vendor/autoload.php";
 
+use GKnyihar\Info2Demo\Services\Router;
+
 $path = $_SERVER["REQUEST_URI"];
 
-if ($path == "/")
-    view('index');
-elseif ($path == "/tasks")
-    require 'tasks.php';
-elseif ($path == "/users")
-    require "users.php";
+$routes = require "routes/routes.php";
+$router = new Router($routes);
+$router->load($path);

@@ -5,14 +5,15 @@ A feladat, hogy a kiinduló szkriptet refaktoráljuk, hogy egy fenntarthatóbb �
 ## PHP kód és a nézet szeparálása
 
 * views
-  * index.view.php
-  * tasks.view.php
-  * users.view.php
+    * index.view.php
+    * tasks.view.php
+    * users.view.php
 * index.php
 * tasks.php
 * users.php
 
 index.view.php:
+
 ```html
 <!doctype html>
 <html lang="en">
@@ -59,7 +60,9 @@ index.view.php:
 </body>
 </html>
 ```
+
 tasks.view.php
+
 ```html
 <!doctype html>
 <html lang="en">
@@ -86,14 +89,14 @@ tasks.view.php
     <div class="max-w-5xl w-full px-4 grow">
         <div class="flex flex-col gap-4">
             <?php foreach ($tasks as $task): ?>
-                <div class="bg-white p-4 shadow border-gray-200 rounded-lg">
-                    <h1 class="text-xl font-bold">
-                        <?= $task->title; ?>
-                    </h1>
-                    <p class="mt-4">
-                        <?= $task->description; ?>
-                    </p>
-                </div>
+            <div class="bg-white p-4 shadow border-gray-200 rounded-lg">
+                <h1 class="text-xl font-bold">
+                    <?= $task->title; ?>
+                </h1>
+                <p class="mt-4">
+                    <?= $task->description; ?>
+                </p>
+            </div>
             <?php endforeach; ?>
         </div>
     </div>
@@ -106,7 +109,9 @@ tasks.view.php
 </body>
 </html>
 ```
+
 users.view.php
+
 ```html
 <!doctype html>
 <html lang="en">
@@ -138,12 +143,12 @@ users.view.php
                 </h1>
                 <table class="mt-4">
                     <?php foreach ($users as $user): ?>
-                        <tr>
-                            <td class="border p-2"><?= $user->id; ?></td>
-                            <td class="border p-2"><?= $user->username; ?></td>
-                            <td class="border p-2"><?= $user->name; ?></td>
-                            <td class="border p-2"><?= $user->email; ?></td>
-                        </tr>
+                    <tr>
+                        <td class="border p-2"><?= $user->id; ?></td>
+                        <td class="border p-2"><?= $user->username; ?></td>
+                        <td class="border p-2"><?= $user->name; ?></td>
+                        <td class="border p-2"><?= $user->email; ?></td>
+                    </tr>
                     <?php endforeach; ?>
                 </table>
                 <p class="mt-4">
@@ -160,13 +165,17 @@ users.view.php
 </body>
 </html>
 ```
+
 index.php
+
 ```php
 <?php
 
 require 'views/index.view.php';
 ```
+
 tasks.php
+
 ```php
 <?php
 try {
@@ -180,7 +189,9 @@ $tasks = $query->fetchAll(PDO::FETCH_OBJ);
 
 require 'views/tasks.view.php';
 ```
+
 users.php
+
 ```php
 <?php
 try {
@@ -194,17 +205,21 @@ $users = $query->fetchAll(PDO::FETCH_OBJ);
 
 require 'views/users.view.php';
 ```
+
 ## Layout készítés
 
 layout.view.php
+
 ```html
     <!--- html --->
-    <div class="max-w-5xl w-full px-4 grow">
-        <?php require $slot; ?>
-    </div>
-    <!--- html --->
+<div class="max-w-5xl w-full px-4 grow">
+    <?php require $slot; ?>
+</div>
+<!--- html --->
 ```
+
 helpers/helpers.php
+
 ```php
 <?php
 
@@ -215,28 +230,36 @@ function view($view, $params = [])
     require "views/layout.view.php";
 }
 ```
+
 index.php
+
 ```php
 <?php
 require "helpers/helpers.php";
 
 view('index');
 ```
+
 tasks.php
+
 ```php
 <?php
 require "helpers/helpers.php";
 // ...
 view('tasks', compact('tasks'));
 ```
+
 users.php
+
 ```php
 <?php
 require "helpers/helpers.php";
 // ...
 view('users', compact('users'));;
 ```
+
 ## Routolás
+
 ```php
 <?php
 require "helpers/helpers.php";
@@ -250,35 +273,156 @@ elseif ($path == "/tasks")
 elseif ($path == "/users")
     require "users.php";
 ```
+
 Törölni kell a `require` sorokat a `tasks.php` és a `users.php`-ból.
 
 ## Autoload
+
 ```bash
 composer init
 ```
+
 composer.json
+
 ```json
 {
-    "name": "gknyihar/info2demo",
-    "type": "project",
-    "license": "MIT",
-    "autoload": {
-        "psr-4": {
-            "GKnyihar\\Info2Demo\\": "src/"
-        }
+  "name": "gknyihar/info2demo",
+  "type": "project",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "GKnyihar\\Info2Demo\\": "src/"
     },
-    "authors": [
-        {
-            "name": "Knyihár Gábor",
-            "email": "gabor.knyihar@aut.bme.hu"
-        }
-    ],
-    "require": {}
+    "files": [
+      "helpers/helpers.php"
+    ]
+  },
+  "authors": [
+    {
+      "name": "Knyihár Gábor",
+      "email": "gabor.knyihar@aut.bme.hu"
+    }
+  ],
+  "require": {
+    "ext-pdo": "*"
+  }
 }
+
 ```
+
 index.php
+
 ```php
 <?php
 require "vendor/autoload.php";
 //...
+```
+
+## Route refaktorálás és controllerek
+src/Services/Router.php
+```php
+<?php
+
+namespace GKnyihar\Info2Demo\Services;
+
+class Router
+{
+    protected $routes;
+
+    public function __construct($routes)
+    {
+        $this->routes = $routes;
+    }
+
+    public function load($path)
+    {
+        if (array_key_exists($path, $this->routes)) {
+            $target = $this->routes[$path];
+            $class_name = $target[0];
+            $class = new $class_name();
+            $method = $target[1];
+            $class->$method();
+        }
+    }
+}
+```
+routes/routes.php
+```php
+<?php
+
+use GKnyihar\Info2Demo\Controllers\IndexController;
+use GKnyihar\Info2Demo\Controllers\TaskController;
+use GKnyihar\Info2Demo\Controllers\UserController;
+
+return [
+    "/" => [IndexController::class, 'index'],
+    "/tasks" => [TaskController::class, 'index'],
+    "/users" => [UserController::class, 'index'],
+];
+```
+src/Controllers/IndexControllers.php
+```php
+<?php
+
+namespace GKnyihar\Info2Demo\Controllers;
+
+class IndexController
+{
+    public function index()
+    {
+        view('index');
+    }
+}
+```
+src/Controllers/TaskControllers.php
+```php
+<?php
+
+namespace GKnyihar\Info2Demo\Controllers;
+
+use PDO;
+use PDOException;
+
+class TaskController
+{
+    public function index()
+    {
+        try {
+            $pdo = new PDO("mysql:host=localhost;dbname=info2demo", "root", "");
+        } catch (PDOException $exception) {
+            die($exception->getMessage());
+        }
+        $query = $pdo->prepare("select * from tasks;");
+        $query->execute();
+        $tasks = $query->fetchAll(PDO::FETCH_OBJ);
+
+        view('tasks', compact('tasks'));
+    }
+}
+```
+src/Controllers/UserControllers.php
+```php
+<?php
+
+namespace GKnyihar\Info2Demo\Controllers;
+
+use PDO;
+use PDOException;
+
+class UserController
+{
+    public function index()
+    {
+        try {
+            $pdo = new PDO("mysql:host=localhost;dbname=info2demo", "root", "");
+        } catch (PDOException $exception) {
+            die($exception->getMessage());
+        }
+        $query = $pdo->prepare("select * from users;");
+        $query->execute();
+        $users = $query->fetchAll(PDO::FETCH_OBJ);
+
+        view('users', compact('users'));
+    }
+}
 ```

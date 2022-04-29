@@ -5,7 +5,10 @@
     "autoload": {
         "psr-4": {
             "GKnyihar\\Info2Demo\\": "src/"
-        }
+        },
+        "files": [
+            "helpers/helpers.php"
+        ]
     },
     "authors": [
         {
@@ -13,5 +16,7 @@
             "email": "gabor.knyihar@aut.bme.hu"
         }
     ],
-    "require": {}
+    "require": {
+        "ext-pdo": "*"
+    }
 }
