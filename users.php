@@ -1,7 +1,7 @@
 <?php
-try{
+try {
     $pdo = new PDO("mysql:host=localhost;dbname=info2demo", "root", "");
-} catch (PDOException $exception){
+} catch (PDOException $exception) {
     die($exception->getMessage());
 }
 $query = $pdo->prepare("select * from users;");
