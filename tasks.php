@@ -1,6 +1,6 @@
 <?php
 try {
-    $pdo = new PDO("mysql:host=localhost;dbname=info2demo", "root", "");
+    $pdo = new PDO("sqlite:db.sqlite");
 } catch (PDOException $exception) {
     die($exception->getMessage());
 }
