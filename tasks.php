@@ -70,7 +70,9 @@ $status = [
     'new' => ['title' => 'Új', 'class' => 'text-primary'],
     'in_progress' => ['title' => 'Folyamatban', 'class' => 'text-warning'],
     'done' => ['title' => 'Kész', 'class' => 'text-secondary']
-]
+];
+
+mysqli_close($link);
 ?>
 
 <!doctype html>
