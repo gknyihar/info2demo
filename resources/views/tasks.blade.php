@@ -21,14 +21,19 @@
                                     {{$task->title}}
                                 </h5>
                                 @if($task->status == 'new')
-                                    <form method="post"
-                                          action="{{route('tasks.delete',$task)}}">
-                                        @csrf
-                                        @method('delete')
-                                        <button type="submit" name="delete" class="btn btn-outline-danger">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </form>
+                                    <div class="d-flex gap-2">
+                                        <a href="{{route('tasks.edit', $task)}}" class="btn btn-outline-warning">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <form method="post"
+                                              action="{{route('tasks.delete',$task)}}">
+                                            @csrf
+                                            @method('delete')
+                                            <button type="submit" name="delete" class="btn btn-outline-danger">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
                                 @endif
                             </div>
                             <h6 class="card-subtitle mb-2 {{$status[$task->status]['class'] }}">

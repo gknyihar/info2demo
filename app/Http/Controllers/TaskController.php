@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Task;
 use App\Models\User;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -15,7 +13,7 @@ class TaskController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(User $user): Factory|\Illuminate\Foundation\Application|View|Application
+    public function index(User $user): View
     {
         $status = [
             'new' => ['title' => 'Új', 'class' => 'text-primary'],
@@ -47,6 +45,33 @@ class TaskController extends Controller
         $user->tasks()->save($task);
 
         return redirect()->back();
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Task $task): View
+    {
+        return view('edit', compact('task'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, Task $task): RedirectResponse
+    {
+        $request->validate([
+            'title' => 'required',
+            'description' => 'required'
+        ], [], [
+            'title' => 'cím',
+            'description' => 'leírás'
+        ]);
+
+        $task->update($request->input());
+        $task->save();
+
+        return redirect()->route('tasks.index', $task->user);
     }
 
 

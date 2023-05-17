@@ -28,4 +28,5 @@ Route::delete('/tasks/{task}', [TaskController::class, 'destroy'])->name('tasks.
 Route::patch('/tasks/{task}/done', [TaskStatusController::class, 'statusDone'])->name('tasks.status.done');
 Route::patch('/tasks/{task}/in_progress', [TaskStatusController::class, 'statusInProgress'])->name('tasks.status.in_progress');
 
-
+Route::get('/tasks/{task}/edit', [TaskController::class, 'edit'])->name('tasks.edit');
+Route::put('/tasks/{task}/edit', [TaskController::class, 'update'])->name('tasks.update');
