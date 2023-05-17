@@ -6,7 +6,7 @@ A feladat, hogy a kiinduló szkriptet refaktoráljuk, hogy egy fenntarthatóbb �
 
 - **master**: kiinduló állapot
 - **develop**: refaktorált állapot
-- **framework**: re
+- **framework**: refaktorálva keretrendszerrel
 - **demo2023**: 2023T félév demó végeredménye
 - **demo2022**: 2022T félév demó végeredménye
 
