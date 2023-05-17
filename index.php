@@ -2,9 +2,9 @@
 
 // Define routes
 $routes = [
-    '/' => './pages/index.php',
-    '/users' => './pages/users.php',
-    '/tasks' => './pages/tasks.php'
+    '/' => './controllers/index.php',
+    '/users' => './controllers/users.php',
+    '/tasks' => './controllers/tasks.php'
 ];
 
 // Determine current root

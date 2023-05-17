@@ -93,3 +93,39 @@ RewriteRule ^(.*)$ /index.php [NC,L,QSA]
 Cseréljük ki az összes fájlban az `index.php`, `users.php` és `tasks.php` linkeket `/`, `/users` és `/tasks` linkekre.
 
 ### Válasszuk szét a logikai és megjelenítési réteget!
+
+- Nevezzük át a `pages` mappát `controllers` névre, és frissítsük ennek megfelelően az `index.php`-t is.
+- Hozzunk létre egy `views` mappát és abban `layout.view.php`, `index.view.php`, `users.view.php` és `tasks.view.php` fájlokat! Az így kapott struktúra a következő:
+```
+htdocs
+ │ .gitignore
+ │ .htaccess
+ │ db.sql 
+ │ index.php
+ │ README.md
+ ├ controllers
+ │  │ index.php
+ │  │ tasks.php
+ │  └ users.php
+ └ views
+    │ index.view.php
+    │ tasks.view.php
+    └ users.view.php
+```
+- Másoljuk az `index.php` tartalmát a `layout.view.php` fájlba!
+- Cseréljük ki a `div.container.my-4.flex-grow-1` elemet a fájlban a `<?php require $view; ?>` elemre!
+- Másoljuk át  az egyes view fájlokba az eredeti fájlokból a `div.container.my-4.flex-grow-1` elemet és tartalmát!
+- Az eredeti fájlokban törüljük ki a teljes html tartalmat és másoljuk be a fájlok végére a megfelelő sorokat: 
+```php
+// index.php
+$view = 'views/index.view.php';
+require 'views/layout.view.php';
+
+// users.php
+$view = 'views/users.view.php';
+require 'views/layout.view.php';
+
+// tasks.php
+$view = 'views/tasks.view.php';
+require 'views/layout.view.php';
+```
