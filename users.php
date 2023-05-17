@@ -1,61 +1,94 @@
 <?php
-try {
-    $pdo = new PDO("sqlite:db.sqlite");
-} catch (PDOException $exception) {
-    die($exception->getMessage());
-}
-$query = $pdo->prepare("select * from users;");
-$query->execute();
-$users = $query->fetchAll(PDO::FETCH_OBJ);
+$link = mysqli_connect('localhost', 'root', '', 'tasks')
+or die("Kapcsolódási hiba: " . mysqli_connect_error());
+
+$users = mysqli_query($link, "SELECT u.*, count(t.id) tasks FROM users u JOIN tasks t on u.id = t.user_id GROUP BY u.id");
+
+$rows = mysqli_num_rows($users);
 ?>
 <!doctype html>
-<html lang="en">
+<html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <title>Info2</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Feladatok</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
-<body>
+<body class="bg-body-tertiary min-vh-100 d-flex flex-column">
 
-<div class="bg-gray-100 flex flex-col items-center min-h-screen">
+<nav class="navbar bg-white shadow-sm">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="/index.php">Feladatok</a>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/users.php">Felhasználók</a>
+            </li>
+        </ul>
+    </div>
+</nav>
 
-    <div class="bg-white h-12 shadow flex items-center text-lg justify-center w-full mb-4 grow-0">
-        <div class="max-w-5xl w-full font-sans flex justify-between px-4">
-            <h1 class="font-bold">Feladatok</h1>
-            <div class="flex gap-4 text-gray-400">
-                <a href="/" class="hover:underline">Főoldal</a>
-                <a href="/tasks.php" class="hover:underline">Feladatok</a>
-                <a href="/users.php" class="hover:underline">Felhasználók</a>
+<div class="container my-4 flex-grow-1">
+
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/index.php">Kezdőlap</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Felhasználók</li>
+        </ol>
+    </nav>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <h5 class="card-title">Felhasználók</h5>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Felhasználónév</th>
+                    <th scope="col">Név</th>
+                    <th scope="col">E-mail</th>
+                    <th scope="col">Feladatok</th>
+                </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                <?php while ($user = mysqli_fetch_object($users)): ?>
+                    <tr>
+                        <th scope="row"><?= $user->id; ?></th>
+                        <td><?= $user->username; ?></td>
+                        <td><?= $user->name; ?></td>
+                        <td>
+                            <i class="bi bi-envelope"></i>
+                            <a href="mailto:<?= $user->email; ?>">
+                                <?= $user->email; ?>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="tasks.php?user=<?= $user->id; ?>"><?= $user->tasks; ?> feladat</a>
+                        </td>
+                    </tr>
+                <?php endwhile; ?>
+                </tbody>
+            </table>
+            <div>
+                Sorok száma: <?= $rows ?>
             </div>
         </div>
+
     </div>
 
-    <div class="max-w-5xl w-full px-4 grow">
-        <div class="flex flex-col gap-4">
-            <div class="bg-white p-4 shadow border-gray-200 rounded-lg">
-                <h1 class="text-xl font-bold">
-                    Felhasználók
-                </h1>
-                <table class="mt-4">
-                    <?php foreach ($users as $user): ?>
-                        <tr>
-                            <td class="border p-2"><?= $user->id; ?></td>
-                            <td class="border p-2"><?= $user->username; ?></td>
-                            <td class="border p-2"><?= $user->name; ?></td>
-                            <td class="border p-2"><?= $user->email; ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                </table>
-                <p class="mt-4">
-                </p>
-            </div>
-        </div>
-    </div>
-
-    <div class="max-w-5xl w-full px-4 text-center grow-0 text-gray-400 p-2">
-        <span>Copyright © 2022</span>
-    </div>
 </div>
 
+
+</div>
+
+<div class="container text-center text-secondary my-4">
+    <span>Copyright © 2023</span>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+        crossorigin="anonymous"></script>
 </body>
 </html>
