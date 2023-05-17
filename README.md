@@ -40,4 +40,56 @@ Az előző problémából következően az új funkcióknak sincs hely. Egy eset
 
 
 ### Refaktoráljuk a kódot, és készítsünk egy routert!
+
+Hozzunk létre egy új mappát `pages` néven, és másoljuk át a php fájlokat ebbe a mappába! Így a kapott struktúra a következő lesz:
+
+```
+htdocs
+ │ .gitignore
+ │ db.sql 
+ │ README.md
+ └─pages
+    │ index.php
+    │ tasks.php
+    └ users.php
+```
+
+Hozzunk létre egy új index.php fájlt a projekt gyökerében, és másoljuk be a következő kódrészletet:
+```php
+<?php
+
+// Define routes
+$routes = [
+    '/' => './pages/index.php',
+    '/users' => './pages/users.php',
+    '/tasks' => './pages/tasks.php'
+];
+
+// Determine current root
+//      $_SERVER["REQUEST_URI"] contains the requested uri, eg.: /tasks?user=1
+//      strtok(...) removes the query string
+//      trim(....) removes the '/' characters from the beginning and in the end
+$path = '/' . trim(strtok($_SERVER["REQUEST_URI"],'?'), '/');
+
+// Check if route exists
+// If not exists, then return with "404 - Not found" error message
+if(!array_key_exists($path, $routes)){
+    http_response_code(404);
+    die("404 - Not found");
+}
+
+// Return with the requested page
+require $routes[$path];
+```
+
+Ahhoz, hogy a kód működjön, szükség van arra, hogy minden kérést az `index.php`-ra dolgozzon fel. Hozzunk létre a projekt gyökerében egy `.htaccess` fájlt és másoljuk be a következő kódrészletet:
+```
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ /index.php [NC,L,QSA]
+```
+
+Cseréljük ki az összes fájlban az `index.php`, `users.php` és `tasks.php` linkeket `/`, `/users` és `/tasks` linkekre.
+
 ### Válasszuk szét a logikai és megjelenítési réteget!

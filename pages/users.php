@@ -22,10 +22,10 @@ mysqli_close($link);
 
 <nav class="navbar bg-white shadow-sm">
     <div class="container">
-        <a class="navbar-brand fw-bold" href="/index.php">Feladatok</a>
+        <a class="navbar-brand fw-bold" href="/">Feladatok</a>
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <a class="nav-link" href="/users.php">Felhasználók</a>
+                <a class="nav-link" href="users">Felhasználók</a>
             </li>
         </ul>
     </div>
@@ -35,7 +35,7 @@ mysqli_close($link);
 
     <nav aria-label="breadcrumb" class="mb-4">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/index.php">Kezdőlap</a></li>
+            <li class="breadcrumb-item"><a href="/">Kezdőlap</a></li>
             <li class="breadcrumb-item active" aria-current="page">Felhasználók</li>
         </ol>
     </nav>
@@ -66,7 +66,7 @@ mysqli_close($link);
                             </a>
                         </td>
                         <td>
-                            <a href="tasks.php?user=<?= $user->id; ?>"><?= $user->tasks; ?> feladat</a>
+                            <a href="/tasks?user=<?= $user->id; ?>"><?= $user->tasks; ?> feladat</a>
                         </td>
                     </tr>
                 <?php endwhile; ?>
