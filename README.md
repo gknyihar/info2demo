@@ -129,3 +129,7 @@ require 'views/layout.view.php';
 $view = 'views/tasks.view.php';
 require 'views/layout.view.php';
 ```
+
+### Elemezzük a framework branchen található projektet!
+
+Nézzük át részletesen az egyes funkciók működését!

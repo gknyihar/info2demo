@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\TaskController;
+use App\Http\Controllers\TaskStatusController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +16,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::view('/', 'index')->name('index');
+
+Route::get('/users', [UserController::class, 'index'])->name('users');
+
+Route::get('/users/{user}/tasks', [TaskController::class, 'index'])->name('tasks.index');
+Route::post('/users/{user}/tasks', [TaskController::class, 'store'])->name('tasks.create');
+
+Route::delete('/tasks/{task}', [TaskController::class, 'destroy'])->name('tasks.delete');
+
+Route::patch('/tasks/{task}/done', [TaskStatusController::class, 'statusDone'])->name('tasks.status.done');
+Route::patch('/tasks/{task}/in_progress', [TaskStatusController::class, 'statusInProgress'])->name('tasks.status.in_progress');
+
+
